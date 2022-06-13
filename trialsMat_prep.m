@@ -59,15 +59,18 @@ function [trialsMat,grid,gridLabels] = trialsMat_prep ...
 
        endOfTrace = size(traces,2);
        if windowOnsets(end)+windowLen-1>endOfTrace
-           %if the last window overruns
-           bleedLen=windowOnsets(end)+windowLen-1-endOfTrace;
-           warning(['Last window exceeds maximum frame number (' num2str(bleedLen) ' frames). ' ...
-                    'Filling with zeros.']);
+           %%%if the last window overruns
+               %bleedLen=windowOnsets(end)+windowLen-1-endOfTrace;
+               %warning(['Last window exceeds maximum frame number (' num2str(bleedLen) ' frames). ' ...
+               %         'Filling with zeros.']);
+               %bleed=windowOnsets(end)+windowLen-1-endOfTrace;
+               %traces=[traces zeros(size(traces,1),bleed)];
 
-           %%%%%%%%%%%%%%%%%%%%%%%%%%% OR DROP THE LAST TRIAL?%%%%%%%%%%%%%%
-
-           bleed=windowOnsets(end)+windowLen-1-endOfTrace;
-           traces=[traces zeros(size(traces,1),bleed)];
+           %%%drop the last trial
+               windowOnsets(end)=[];
+               stimTrace(end)=[];
+               warning(['Last window exceeds maximum frame number (' num2str(bleedLen) ' frames). ' ...
+                        'The last trial is dropped']);
        end
 
    %% sorting indices by orientation
@@ -81,7 +84,7 @@ function [trialsMat,grid,gridLabels] = trialsMat_prep ...
   trialsMat = get_trialsMat(traces,windowLen,windowOnsets);
 
   xgrid=[0 baselineLen baselineLen+stimLen windowLen];
-  xgridLabels=["start";"stim on";"stim off";"end"];
+  xgridLabels=["";"stim on";"stim off";""];
   grid{2} = xgrid; grid{1} = ygrid;
   gridLabels{2} = xgridLabels; gridLabels{1} = ygridLabels;
 end
@@ -112,3 +115,4 @@ function trialsMat = get_trialsMat(traces,zdim,zStarts)
         end
     end
 end
+

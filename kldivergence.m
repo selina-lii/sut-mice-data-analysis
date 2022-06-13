@@ -45,6 +45,8 @@ function kldivs = kldivergence(trialsMat,grid,binsize)
                 histBase=histBase/sum(histBase);
                 histNonBase=hist(nonBaseCond,edges);
                 histNonBase=histNonBase/sum(histNonBase);
+
+                %
                 
                 %%%%%%%%%%%%%%%%%%%%%% calculate kldiv %%%%%%%%%%%%%%%%%%%%%
                 kldivSum=histBase.*(log2(histBase)-log2(histNonBase));
